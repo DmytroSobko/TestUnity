@@ -3,13 +3,13 @@ using System.Linq;
 
 public static class ListOfQueuesExtension
 {
-    public static List<T> GetAllElementsAsList<T, T1>(this List<Queue<T1>> listOfQueues) where T1 : T
+    public static List<T> GetAllElementsAsList<T>(this List<Queue<T>> listOfQueues)
     {
         List<T> allObjects = new List<T>();
 
-        foreach (Queue<T1> queue in listOfQueues)
+        foreach (Queue<T> queue in listOfQueues)
         {
-            List<T1> poolableObjects = queue.ToList();
+            List<T> poolableObjects = queue.ToList();
 
             foreach (var poolableObject in poolableObjects)
             {
