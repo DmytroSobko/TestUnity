@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class GameStateMachine
 {
     private readonly Dictionary<Type, IExitableState> states;
     private IExitableState activeState;
 
-    public GameStateMachine(AllServices services, ICoroutineRunner coroutineRunner, GameWorld gameWorld, ScreenUI screenUI, PoolingDataScriptableObject poolingData, Transform poolingRoot, uint spawnByDefault, KeyCode spawnKeyCode, KeyCode despawnKeyCode)
+    public GameStateMachine(AllServices services, ICoroutineRunner coroutineRunner, GameWorld gameWorld, GameUI gameUI, GameSetupScriptableObject gameSetupData, PoolingDataScriptableObject poolingData)
     {
         states = new Dictionary<Type, IExitableState>()
         {
-            [typeof(BootstrapState)] = new BootstrapState(this, services, gameWorld, poolingData, poolingRoot, spawnKeyCode, despawnKeyCode),
-            [typeof(LoadGameState)] = new LoadGameState(this, services, screenUI),
-            [typeof(GameLoopState)] = new GameLoopState(this, services, coroutineRunner, gameWorld, screenUI, spawnByDefault, spawnKeyCode, despawnKeyCode),
+            [typeof(BootstrapState)] = new BootstrapState(this, services, gameWorld, gameSetupData, poolingData),
+            [typeof(LoadGameState)] = new LoadGameState(this, gameUI, poolingData),
+            [typeof(GameLoopState)] = new GameLoopState(this, services, coroutineRunner, gameWorld, gameUI, gameSetupData),
         };
     }
 

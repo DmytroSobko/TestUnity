@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PoolableObject : MonoBehaviour
+public abstract class PoolableObject : MonoBehaviour
 {
     public Transform Transform { get; private set; }
 

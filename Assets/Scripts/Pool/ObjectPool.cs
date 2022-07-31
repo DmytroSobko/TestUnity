@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPool
+public class ObjectPool<T> where T : PoolableObject
 {
     public Type PoolableObjectType { get; private set; }
 
     private Transform poolNode;
     private PoolableObjectFactory factory;
     private PoolableObject poolableObject;
-    private Queue<PoolableObject> objects = new Queue<PoolableObject>();
+    private Queue<T> objects = new Queue<T>();
 
     public ObjectPool(PoolData objectData, PoolableObjectFactory factory, Transform poolNode)
     {
         this.poolNode = poolNode;
         this.factory = factory;
 
-        PoolableObjectType = objectData.PoolableObject.GetType();
-        objects = new Queue<PoolableObject>();
         poolableObject = objectData.PoolableObject;
+        PoolableObjectType = poolableObject.GetType();
+        objects = new Queue<T>();
 
         for (int i = 0; i < objectData.NumberByDefault; i++)
         {
@@ -28,35 +28,30 @@ public class ObjectPool
 
     private void CreateObject(PoolableObject poolableObject)
     {
-        PoolableObject newObject = factory.Create(poolableObject, poolNode);
+        T newObject = factory.Create<T>(poolableObject, poolNode);
         newObject.SetActive(false);
         objects.Enqueue(newObject);
     }
 
-    public bool IsTypeOf<T>()
+    public bool IsTypeOf<T1>()
     {
-        return PoolableObjectType == typeof(T);
+        return PoolableObjectType == typeof(T1);
     }
 
-    public bool IsTypeOf(Type type)
-    {
-        return PoolableObjectType == type;
-    }
-
-    public PoolableObject GetObject()
+    public T GetObject()
     {
         if (objects.Count == 0)
         {
             CreateObject(poolableObject);
         }
 
-        PoolableObject poolObject = objects.Dequeue();
+        T poolObject = objects.Dequeue();
         poolObject.SetActive(true);
 
         return poolObject;
     }
 
-    public void ReturnObject(PoolableObject returnObject)
+    public void ReturnObject(T returnObject)
     {
         returnObject.Transform.parent = poolNode;
         returnObject.Transform.position = poolNode.position;

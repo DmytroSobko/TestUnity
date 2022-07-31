@@ -12,13 +12,15 @@ public struct PoolData
         => numberByDefault;
 
     [SerializeField]
+    [Min(0)]
     private PoolableObject poolableObject;
 
     [SerializeField]
+    [Min(0)]
     private int numberByDefault;
 }
 
-[CreateAssetMenu(fileName = "PoolingData", menuName = "ScriptableObjects/PoolingData", order = 1)]
+[CreateAssetMenu(fileName = "PoolingData", menuName = "ScriptableObjects/PoolingData", order = 2)]
 public class PoolingDataScriptableObject : ScriptableObject
 {
     public List<PoolData> PoolsData;

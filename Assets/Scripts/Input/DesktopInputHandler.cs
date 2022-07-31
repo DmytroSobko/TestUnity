@@ -14,7 +14,7 @@ public class DesktopInputHandler: IInputHandler<KeyCode>
         this.keyCodes = keyCodes;
     }
 
-    public void Update()
+    public void Process()
     {
         if (keyCodes.Any(CheckAnyPressed))
         {

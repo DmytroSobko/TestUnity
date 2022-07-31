@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GameWorld : MonoBehaviour, IBoundable
+public class GameWorld : MonoBehaviour
 {
     public Transform Transform { get; private set; }
     public Bounds Bounds { get; private set; }

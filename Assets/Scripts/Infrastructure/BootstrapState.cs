@@ -7,20 +7,16 @@ public class BootstrapState : IState
 
     private readonly GameWorld gameWorld;
     private readonly AllServices services;
+    private readonly GameSetupScriptableObject gameSetupData;
     private readonly PoolingDataScriptableObject poolingData;
-    private readonly Transform poolingRoot;
-    private readonly KeyCode spawnKeyCode;
-    private readonly KeyCode despawnKeyCode;
 
-    public BootstrapState(GameStateMachine stateMachine, AllServices services, GameWorld gameWorld, PoolingDataScriptableObject poolingData, Transform poolingRoot, KeyCode spawnKeyCode, KeyCode despawnKeyCode)
+    public BootstrapState(GameStateMachine stateMachine, AllServices services, GameWorld gameWorld, GameSetupScriptableObject gameSetupData, PoolingDataScriptableObject poolingData)
     {
         this.stateMachine = stateMachine;
         this.services = services;
         this.gameWorld = gameWorld;
         this.poolingData = poolingData;
-        this.poolingRoot = poolingRoot;
-        this.spawnKeyCode = spawnKeyCode;
-        this.despawnKeyCode = despawnKeyCode;
+        this.gameSetupData = gameSetupData;
 
         RegisterServices();
     }
@@ -37,11 +33,14 @@ public class BootstrapState : IState
 
     private void RegisterServices()
     {
-        services.RegisterSingle(new PoolingSystem(poolingData, poolingRoot));
-        services.RegisterSingle<ISpawner<PoolableObject>>(new PoolableObjectSpawner(services.Single<PoolingSystem>(), gameWorld));
+        services.RegisterSingle(new UpdatableService());
+        services.RegisterSingle<ISpawnerResource<Shape>>(new PoolingSystem<Shape>(poolingData));
+        services.RegisterSingle<ISpawner<Shape>>(new ObjectSpawner<Shape>(services.Single<ISpawnerResource<Shape>>(), gameWorld));
         services.RegisterSingle<IInputHandler<KeyCode>>(new DesktopInputHandler(new List<KeyCode>
         {
-            spawnKeyCode, despawnKeyCode
+            gameSetupData.SpawnKeyCode, gameSetupData.DespawnKeyCode
         }));
+
+        services.Single<UpdatableService>().AddUpdatable(services.Single<IInputHandler<KeyCode>>());
     }
 }

@@ -28,17 +28,18 @@ public class PoolingSystemDropdown : MonoBehaviour
         dropdown.onValueChanged.RemoveListener(OnValueChanged);
     }
 
-    public void Init(List<ObjectPool> objectPools)
+    public void Init(List<PoolData> poolsData)
     {
-        if (objectPools.Count > 0)
+        if (poolsData.Count > 0)
         {
-            SelectedValue = objectPools.First().PoolableObjectType;
+            SelectedValue = poolsData.First().PoolableObject.GetType();
 
-            foreach (ObjectPool objectPool in objectPools)
+            foreach (PoolData poolData in poolsData)
             {
-                var optionData = new TMP_Dropdown.OptionData(objectPool.PoolableObjectType.ToString());
+                Type poolableObjectType = poolData.PoolableObject.GetType();
+                var optionData = new TMP_Dropdown.OptionData(poolableObjectType.ToString());
                 dropdown.options.Add(optionData);
-                dropdownTypeOptions.Add(objectPool.PoolableObjectType);
+                dropdownTypeOptions.Add(poolableObjectType);
             }
 
             dropdown.RefreshShownValue();

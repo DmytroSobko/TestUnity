@@ -1,11 +1,9 @@
-using UnityEngine;
-
 public class Game
 {
     public GameStateMachine StateMachine;
 
-    public Game(ICoroutineRunner coroutineRunner, GameWorld gameWorld, ScreenUI screenUI, PoolingDataScriptableObject poolingData, Transform poolingRoot, uint spawnByDefault, KeyCode spawnKeyCode, KeyCode despawnKeyCode)
+    public Game(ICoroutineRunner coroutineRunner, GameWorld gameWorld, GameUI gameUI, GameSetupScriptableObject gameSetupData, PoolingDataScriptableObject poolingData)
     {
-        StateMachine = new GameStateMachine(AllServices.Container, coroutineRunner, gameWorld, screenUI, poolingData, poolingRoot, spawnByDefault, spawnKeyCode, despawnKeyCode);
+        StateMachine = new GameStateMachine(AllServices.Container, coroutineRunner, gameWorld, gameUI, gameSetupData, poolingData);
     }
 }

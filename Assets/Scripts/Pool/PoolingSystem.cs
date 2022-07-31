@@ -1,22 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using System;
 
-public class PoolingSystem : IService
+public class PoolingSystem<T> : ISpawnerResource<T> where T : PoolableObject
 {
-    public List<ObjectPool> ObjectPools
+    private const string POOLING_ROOT_NAME = "PoolingRoot";
+
+    public List<ObjectPool<T>> ObjectPools
         => objectPools;
 
-    private Transform poolingRoot;
-    private PoolableObjectFactory factory;
+    private readonly Transform poolingRoot;
+    private readonly PoolableObjectFactory factory;
 
-    private List<ObjectPool> objectPools = new List<ObjectPool>();
+    public readonly List<ObjectPool<T>> objectPools = new List<ObjectPool<T>>();
 
-    public PoolingSystem(PoolingDataScriptableObject poolingData, Transform poolingRoot)
+    public PoolingSystem(PoolingDataScriptableObject poolingData)
     {
-        this.poolingRoot = poolingRoot;
+        poolingRoot = new GameObject(POOLING_ROOT_NAME).transform;
         factory = new PoolableObjectFactory();
+
         CreatePools(poolingData.PoolsData);
     }
 
@@ -33,37 +35,22 @@ public class PoolingSystem : IService
 
     private void CreatePool(PoolData poolData, Transform poolNode)
     {
-        var objectPool = new ObjectPool(poolData, factory, poolNode);
+        var objectPool = new ObjectPool<T>(poolData, factory, poolNode);
         objectPools.Add(objectPool);
     }
 
-    public PoolableObject GetObject(Type poolableObjectType)
+    public T1 GetObject<T1>() where T1 : T
     {
-        return GetPool(poolableObjectType).GetObject();
+        return GetPool<T1>().GetObject() as T1;
     }
 
-    public PoolableObject GetObject<T>() where T : PoolableObject
+    public void ReturnObject<T1>(T1 returnObject) where T1 : T
     {
-        return GetPool<T>().GetObject();
+        GetPool<T1>().ReturnObject(returnObject);
     }
 
-    public void ReturnObject(PoolableObject returnObject)
+    private ObjectPool<T> GetPool<T1>() where T1 : T
     {
-        GetPool(returnObject.GetType()).ReturnObject(returnObject);
-    }
-
-    public void ReturnObject<T>(PoolableObject returnObject) where T : PoolableObject
-    {
-        GetPool<T>().ReturnObject(returnObject);
-    }
-
-    private ObjectPool GetPool<T>()
-    {
-        return objectPools.First(pool => pool.IsTypeOf<T>());
-    }
-
-    private ObjectPool GetPool(Type poolableObjectType)
-    {
-        return objectPools.First(pool => pool.IsTypeOf(poolableObjectType));
+        return objectPools.First(pool => pool.IsTypeOf<T1>());
     }
 }

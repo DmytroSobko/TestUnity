@@ -23,15 +23,15 @@ public class RandomMovement : MonoBehaviour
     public void Move()
     {
         Vector3 direction = currentTargetPoint - Transform.position;
-        direction.Normalize();
 
-        if (direction.magnitude < Mathf.Epsilon)
+        if (direction.magnitude < 0.05f)
         {
             currentTargetPoint = Bounds.GetRandomPointInside();
         }
         else
         {
-            Transform.position = speed * Time.deltaTime * direction;
+            direction.Normalize();
+            Transform.position += speed * Time.deltaTime * direction;
         }
     }
 }

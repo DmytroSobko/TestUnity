@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class ScreenUI : MonoBehaviour
+public class GameUI : MonoBehaviour
 {
     public PoolingSystemDropdown PoolingSystemDropdown
         => poolingSystemDropdown;
