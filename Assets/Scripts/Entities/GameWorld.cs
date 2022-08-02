@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class GameWorld : MonoBehaviour
 {
-    public Transform Transform { get; private set; }
     public Bounds Bounds { get; private set; }
 
     [SerializeField]
@@ -10,7 +9,6 @@ public class GameWorld : MonoBehaviour
 
     private void Awake()
     {
-        Transform = GetComponent<Transform>();
         Bounds = new Bounds(transform.position, size);
     }
 

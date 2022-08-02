@@ -7,9 +7,6 @@ using UnityEngine;
 
 public class GameLoopState : IState
 {
-    private const string SPAWN_COMMAND = "Spawn";
-    private const string DESPAWN_COMMAND = "Despawn";
-
     private readonly GameStateMachine stateMachine;
 
     private readonly ICoroutineRunner coroutineRunner;
@@ -19,7 +16,7 @@ public class GameLoopState : IState
 
     private readonly UpdatableService updatableService;
     private readonly ISpawner<Shape> objectSpawner;
-    private readonly IInputHandler<KeyCode> inputHandler;
+    private readonly InputHandler<KeyCode> inputHandler;
 
     private List<Shape> activeObjects = new List<Shape>();
 
@@ -35,9 +32,11 @@ public class GameLoopState : IState
 
         updatableService = services.Single<UpdatableService>();
         objectSpawner = services.Single<ISpawner<Shape>>();
-        inputHandler = services.Single<IInputHandler<KeyCode>>();
+        inputHandler = services.Single<InputHandler<KeyCode>>();
+
+        updatableService.AddUpdatable(inputHandler);
     }
-     
+
     public void Enter()
     {
         Subscribe();
@@ -108,7 +107,7 @@ public class GameLoopState : IState
 
     private void SetNeighboursForNewcomer(Shape newcomer)
     {
-        List<Transform> newcomerNeighbours = activeObjects.Select(neighbour => neighbour.Transform).ToList();
+        List<Transform> newcomerNeighbours = activeObjects.Select(neighbour => neighbour.transform).ToList();
         newcomer.FindNearestNeighbour.SetNeighbours(newcomerNeighbours);
     }
 
@@ -116,7 +115,7 @@ public class GameLoopState : IState
     {
         foreach (Shape activeObject in activeObjects)
         {
-            activeObject.FindNearestNeighbour.AddNeighbour(neighbour.Transform);
+            activeObject.FindNearestNeighbour.AddNeighbour(neighbour.transform);
         }
     }
 
@@ -124,28 +123,26 @@ public class GameLoopState : IState
     {
         foreach (Shape activeObject in activeObjects)
         {
-            activeObject.FindNearestNeighbour.RemoveNeighbour(neighbour.Transform);
+            activeObject.FindNearestNeighbour.RemoveNeighbour(neighbour.transform);
         }
     }
 
     private void OnInputTookPlace(KeyCode keyCode)
     {
         if (gameUI.IsInputFieldFocused)
-        {
             return;
-        }
 
         if (keyCode == gameSetup.SpawnKeyCode)
         {
-            SpawnOrDespawn(SPAWN_COMMAND);
+            SpawnOrDespawn(Constants.SPAWN_METHOD);
         }
         else if (keyCode == gameSetup.DespawnKeyCode)
         {
-            SpawnOrDespawn(DESPAWN_COMMAND);
+            SpawnOrDespawn(Constants.DESPAWN_METHOD);
         }
     }
 
-    private void SpawnOrDespawn(string action)
+    private void SpawnOrDespawn(string methodName)
     {
         try
         {
@@ -154,7 +151,7 @@ public class GameLoopState : IState
 
             MethodInfo method = objectSpawner
                 .GetType()
-                .GetMethod(action)
+                .GetMethod(methodName)
                 .MakeGenericMethod(new Type[] { poolableObjectType });
 
             method.Invoke(objectSpawner, new object[] { numberToSpawnOrDespawn });

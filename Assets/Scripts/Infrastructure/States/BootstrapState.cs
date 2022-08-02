@@ -34,13 +34,11 @@ public class BootstrapState : IState
     private void RegisterServices()
     {
         services.RegisterSingle(new UpdatableService());
-        services.RegisterSingle<ISpawnerResource<Shape>>(new PoolingSystem<Shape>(poolingData));
-        services.RegisterSingle<ISpawner<Shape>>(new ObjectSpawner<Shape>(services.Single<ISpawnerResource<Shape>>(), gameWorld));
-        services.RegisterSingle<IInputHandler<KeyCode>>(new DesktopInputHandler(new List<KeyCode>
+        services.RegisterSingle<ISpawner<Shape>>(new ObjectSpawner<Shape>(new PoolingSystem<Shape>(poolingData), gameWorld));
+        services.RegisterSingle<InputHandler<KeyCode>>(new DesktopInputHandler(new List<KeyCode>
         {
-            gameSetup.SpawnKeyCode, gameSetup.DespawnKeyCode
+            gameSetup.SpawnKeyCode,
+            gameSetup.DespawnKeyCode
         }));
-
-        services.Single<UpdatableService>().AddUpdatable(services.Single<IInputHandler<KeyCode>>());
     }
 }

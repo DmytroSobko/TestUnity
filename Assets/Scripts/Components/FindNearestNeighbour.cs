@@ -4,15 +4,14 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class FindNearestNeighbour : MonoBehaviour
 {
-    public LineRenderer LineRenderer { get; private set; }
-
+    private LineRenderer lineRenderer;
     private KDTree tree;
     private KDQuery query = new KDQuery();
     private List<Transform> neighbours = new List<Transform>();
 
     private void Awake()
     {
-        LineRenderer = GetComponent<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     public void SetNeighbours(List<Transform> neighbours)
@@ -31,18 +30,28 @@ public class FindNearestNeighbour : MonoBehaviour
     {
         neighbours.Remove(neighbour);
         tree.Build(neighbours);
+
+        if (neighbours.Count == 0)
+        {
+            DrawLineToNearest(transform.position);
+        }
     }
 
     public void FindNearest()
     {
-        tree.Rebuild();
-
-        int closestIndex = query.ClosestPoint(tree, transform.position);
-        if (closestIndex != -1)
+        if (neighbours.Count > 0)
         {
+            tree.Rebuild();
+
+            int closestIndex = query.ClosestPoint(tree, transform.position);
             Vector3 nearest = neighbours[closestIndex].position;
-            LineRenderer.SetPosition(0, transform.position);
-            LineRenderer.SetPosition(1, nearest);
+            DrawLineToNearest(nearest);
         }
+    }
+
+    private void DrawLineToNearest(Vector3 nearest)
+    {
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, nearest);
     }
 }

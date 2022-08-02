@@ -4,11 +4,6 @@ using System.Linq;
 
 public class PoolingSystem<T> : ISpawnerResource<T> where T : PoolableObject
 {
-    private const string POOLING_ROOT_NAME = "PoolingRoot";
-
-    public List<ObjectPool<T>> ObjectPools
-        => objectPools;
-
     private readonly Transform poolingRoot;
     private readonly PoolableObjectFactory factory;
 
@@ -16,7 +11,7 @@ public class PoolingSystem<T> : ISpawnerResource<T> where T : PoolableObject
 
     public PoolingSystem(PoolingDataScriptableObject poolingData)
     {
-        poolingRoot = new GameObject(POOLING_ROOT_NAME).transform;
+        poolingRoot = new GameObject(Constants.POOLING_ROOT_NAME).transform;
         factory = new PoolableObjectFactory();
 
         CreatePools(poolingData.PoolsData);

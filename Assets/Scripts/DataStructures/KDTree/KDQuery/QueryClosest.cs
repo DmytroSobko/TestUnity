@@ -10,11 +10,6 @@ public partial class KDQuery
         List<Transform> points = tree.Points;
         List<int> permutation = tree.Permutation;
 
-        if (points.Count == 0)
-        {
-            return -1;
-        }
-
         int smallestIndex = 0;
         /// Smallest Squared Radius
         float SSR = float.PositiveInfinity;

@@ -30,7 +30,7 @@ public class ObjectSpawner<T> : ISpawner<T> where T : MonoBehaviour
         {
             T1 spawnObject = resource.GetObject<T1>();
             spawnObject.transform.position = gameWorld.Bounds.GetRandomPointInside();
-            spawnObject.transform.parent = gameWorld.Transform;
+            spawnObject.transform.parent = gameWorld.transform;
             objectQueue.Enqueue(spawnObject);
             ObjectSpawned?.Invoke(spawnObject);
         }

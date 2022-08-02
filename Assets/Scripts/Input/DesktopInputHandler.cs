@@ -1,28 +1,16 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class DesktopInputHandler: IInputHandler<KeyCode>
+public class DesktopInputHandler : InputHandler<KeyCode>
 {
-    public event Action<KeyCode> InputTookPlace;
-
-    private List<KeyCode> keyCodes;
-
-    public DesktopInputHandler(List<KeyCode> keyCodes)
+    public DesktopInputHandler(List<KeyCode> keyCodes) : base(keyCodes)
     {
-        this.keyCodes = keyCodes;
+
     }
 
-    public void Process()
+    protected override KeyCode CheckTrigger()
     {
-        if (keyCodes.Any(CheckAnyPressed))
-        {
-            var keyCode = keyCodes.First(CheckAnyPressed);
-            InputTookPlace?.Invoke(keyCode);
-        }
+        return triggers.FirstOrDefault(keyCode => Input.GetKeyDown(keyCode));
     }
-
-    private bool CheckAnyPressed(KeyCode keyCode)
-        => Input.GetKeyDown(keyCode);
 }

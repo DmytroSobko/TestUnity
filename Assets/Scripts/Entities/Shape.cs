@@ -7,10 +7,8 @@ public abstract class Shape : PoolableObject, IUpdatable
     public RandomMovement RandomMovement { get; private set; }
     public FindNearestNeighbour FindNearestNeighbour { get; private set; }
 
-    protected override void Awake()
+    private void Awake()
     {
-        base.Awake();
-
         RandomMovement = GetComponent<RandomMovement>();
         FindNearestNeighbour = GetComponent<FindNearestNeighbour>();
     }

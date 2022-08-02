@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ObjectPool<T> where T : PoolableObject
 {
-    public Type PoolableObjectType { get; private set; }
-
     private Transform poolNode;
     private PoolableObjectFactory factory;
     private PoolableObject poolableObject;
@@ -15,9 +12,8 @@ public class ObjectPool<T> where T : PoolableObject
     {
         this.poolNode = poolNode;
         this.factory = factory;
-
         poolableObject = objectData.PoolableObject;
-        PoolableObjectType = poolableObject.GetType();
+
         objects = new Queue<T>();
 
         for (int i = 0; i < objectData.NumberByDefault; i++)
@@ -35,7 +31,7 @@ public class ObjectPool<T> where T : PoolableObject
 
     public bool IsTypeOf<T1>()
     {
-        return PoolableObjectType == typeof(T1);
+        return poolableObject.GetType() == typeof(T1);
     }
 
     public T GetObject()
@@ -53,8 +49,8 @@ public class ObjectPool<T> where T : PoolableObject
 
     public void ReturnObject(T returnObject)
     {
-        returnObject.Transform.parent = poolNode;
-        returnObject.Transform.position = poolNode.position;
+        returnObject.transform.parent = poolNode;
+        returnObject.transform.position = poolNode.position;
         returnObject.SetActive(false);
         objects.Enqueue(returnObject);
     }
