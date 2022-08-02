@@ -62,6 +62,7 @@ public class ObjectSpawner<T> : ISpawner<T> where T : MonoBehaviour
             {
                 T1 despawnObject = objectQueue.Dequeue() as T1;
                 resource.ReturnObject(despawnObject);
+                ObjectDespawned?.Invoke(despawnObject);
             }
         }
 

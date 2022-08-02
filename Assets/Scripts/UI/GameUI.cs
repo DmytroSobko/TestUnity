@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameUI : MonoBehaviour
 {
     public PoolingSystemDropdown PoolingSystemDropdown
-        => poolingSystemDropdown;
+     => poolingSystemDropdown;
 
     public string NumberOfObjectsToSpawnOrDespawn
         => numberOfObjectsToSpawnOrDespawnInputField.text;
@@ -13,7 +13,13 @@ public class GameUI : MonoBehaviour
         => numberOfObjectsToSpawnOrDespawnInputField.isFocused;
 
     [SerializeField]
-    private TextMeshProUGUI spawnedObjectsText;
+    private TextMeshProUGUI spawnKeyCodeText;
+
+    [SerializeField]
+    private TextMeshProUGUI despawnKeyCodeText;
+
+    [SerializeField]
+    private TextMeshProUGUI spawnedObjectsNumberText;
 
     [SerializeField]
     private PoolingSystemDropdown poolingSystemDropdown;
@@ -21,8 +27,15 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private TMP_InputField numberOfObjectsToSpawnOrDespawnInputField;
 
-    public void UpdateSpawnedObjectsText(int value)
+    public void Init(GameSetupScriptableObject gameSetup, PoolingDataScriptableObject poolingData)
     {
-        spawnedObjectsText.text = value.ToString();
+        poolingSystemDropdown.Init(poolingData.PoolsData);
+        spawnKeyCodeText.text = gameSetup.SpawnKeyCode.ToString();
+        despawnKeyCodeText.text = gameSetup.DespawnKeyCode.ToString();
+    }
+
+    public void UpdateSpawnedObjectsNumberText(int value)
+    {
+        spawnedObjectsNumberText.text = value.ToString();
     }
 }

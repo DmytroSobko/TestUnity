@@ -9,9 +9,8 @@ public class PoolingSystemDropdown : MonoBehaviour
 {
     public Type SelectedValue { get; private set; }
 
-    private List<Type> dropdownTypeOptions = new List<Type>();
-
     private TMP_Dropdown dropdown;
+    private List<Type> dropdownTypeOptions = new List<Type>();
 
     private void Awake()
     {

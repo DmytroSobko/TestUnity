@@ -7,16 +7,16 @@ public class BootstrapState : IState
 
     private readonly GameWorld gameWorld;
     private readonly AllServices services;
-    private readonly GameSetupScriptableObject gameSetupData;
+    private readonly GameSetupScriptableObject gameSetup;
     private readonly PoolingDataScriptableObject poolingData;
 
-    public BootstrapState(GameStateMachine stateMachine, AllServices services, GameWorld gameWorld, GameSetupScriptableObject gameSetupData, PoolingDataScriptableObject poolingData)
+    public BootstrapState(GameStateMachine stateMachine, AllServices services, GameWorld gameWorld, GameSetupScriptableObject gameSetup, PoolingDataScriptableObject poolingData)
     {
         this.stateMachine = stateMachine;
         this.services = services;
         this.gameWorld = gameWorld;
         this.poolingData = poolingData;
-        this.gameSetupData = gameSetupData;
+        this.gameSetup = gameSetup;
 
         RegisterServices();
     }
@@ -38,7 +38,7 @@ public class BootstrapState : IState
         services.RegisterSingle<ISpawner<Shape>>(new ObjectSpawner<Shape>(services.Single<ISpawnerResource<Shape>>(), gameWorld));
         services.RegisterSingle<IInputHandler<KeyCode>>(new DesktopInputHandler(new List<KeyCode>
         {
-            gameSetupData.SpawnKeyCode, gameSetupData.DespawnKeyCode
+            gameSetup.SpawnKeyCode, gameSetup.DespawnKeyCode
         }));
 
         services.Single<UpdatableService>().AddUpdatable(services.Single<IInputHandler<KeyCode>>());

@@ -18,13 +18,14 @@ public class RandomMovement : MonoBehaviour
     public void SetBounds(Bounds bounds)
     {
         Bounds = bounds;
+        currentTargetPoint = Bounds.GetRandomPointInside();
     }
 
     public void Move()
     {
         Vector3 direction = currentTargetPoint - Transform.position;
 
-        if (direction.magnitude < 0.05f)
+        if (direction.sqrMagnitude < Constants.DELTA)
         {
             currentTargetPoint = Bounds.GetRandomPointInside();
         }

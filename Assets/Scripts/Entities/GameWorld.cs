@@ -21,7 +21,7 @@ public class GameWorld : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = new Color(Color.white.r, Color.white.g, Color.white.b, 0.25f);
+        Gizmos.color = new Color(Color.white.r, Color.white.g, Color.white.b, 0.35f);
         Gizmos.DrawCube(transform.position, size);
     }
 }

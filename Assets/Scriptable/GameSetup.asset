@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33874dda5d87f4b58a63a985abab18a7, type: 3}
   m_Name: GameSetup
   m_EditorClassIdentifier: 
-  spawnByDefault: 15
-  spawnKeyCode: 32
-  despawnKeyCode: 8
+  spawnByDefault: 5
+  spawnKeyCode: 115
+  despawnKeyCode: 100

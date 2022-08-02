@@ -16,4 +16,4 @@ MonoBehaviour:
   - poolableObject: {fileID: -4520845796373705689, guid: 9e9676449446b42278078214baa998a1, type: 3}
     numberByDefault: 15
   - poolableObject: {fileID: 8051709180452870925, guid: 352d23276b790470882888bc83d0b5b1, type: 3}
-    numberByDefault: 10
+    numberByDefault: 15

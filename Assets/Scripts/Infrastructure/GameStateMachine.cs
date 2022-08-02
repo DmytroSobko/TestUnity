@@ -6,13 +6,13 @@ public class GameStateMachine
     private readonly Dictionary<Type, IExitableState> states;
     private IExitableState activeState;
 
-    public GameStateMachine(AllServices services, ICoroutineRunner coroutineRunner, GameWorld gameWorld, GameUI gameUI, GameSetupScriptableObject gameSetupData, PoolingDataScriptableObject poolingData)
+    public GameStateMachine(AllServices services, ICoroutineRunner coroutineRunner, GameWorld gameWorld, GameUI gameUI, GameSetupScriptableObject gameSetup, PoolingDataScriptableObject poolingData)
     {
         states = new Dictionary<Type, IExitableState>()
         {
-            [typeof(BootstrapState)] = new BootstrapState(this, services, gameWorld, gameSetupData, poolingData),
-            [typeof(LoadGameState)] = new LoadGameState(this, gameUI, poolingData),
-            [typeof(GameLoopState)] = new GameLoopState(this, services, coroutineRunner, gameWorld, gameUI, gameSetupData),
+            [typeof(BootstrapState)] = new BootstrapState(this, services, gameWorld, gameSetup, poolingData),
+            [typeof(LoadGameState)] = new LoadGameState(this, gameUI, gameSetup, poolingData),
+            [typeof(GameLoopState)] = new GameLoopState(this, services, coroutineRunner, gameWorld, gameUI, gameSetup),
         };
     }
 

@@ -9,7 +9,7 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
     private GameUI gameUI;
 
     [SerializeField]
-    private GameSetupScriptableObject gameSetupData;
+    private GameSetupScriptableObject gameSetup;
 
     [SerializeField]
     private PoolingDataScriptableObject poolingData;
@@ -18,7 +18,7 @@ public class GameBootstrapper : MonoBehaviour, ICoroutineRunner
 
     private void Start()
     {
-        game = new Game(this, gameWorld, gameUI, gameSetupData, poolingData);
+        game = new Game(this, gameWorld, gameUI, gameSetup, poolingData);
         game.StateMachine.Enter<BootstrapState>();
 
         DontDestroyOnLoad(this);
