@@ -17,3 +17,4 @@
     -Should use the pooling system to spawn/despawn the previously created prefab.
     -Create a simple UI displaying the current amount of spawned prefabs + an input field.
     -Create a script that spawn x amount of the prefab on start and lets you spawn and despawn x prefabs (x gets its value from the input field) with keys that are exposed to the editor. The spawned prefab should be spawned at a random position within the zone created by the last task system.
+ 
